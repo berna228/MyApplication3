@@ -22,7 +22,7 @@ public class SparkMain extends ActionBarActivity {
     TextView inputCmdText, inputResultText;
     private static final String MY_TAG = "SPARK_CORE_TAG";
     public String
-            access_token = "a1e9c79a438287e6b9590a06ad32f20e7ce834dc",
+            access_token = "558b85ab95e7481b0b85e8bc1bd9a37c3430e6cb",
             device_id = "48ff72065067555045311387";
 
 //    private Thread timerThread;
