@@ -1,6 +1,7 @@
 package com.example.app;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.logging.Handler;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -26,7 +26,7 @@ public class SparkMain extends ActionBarActivity {
             device_id = "48ff72065067555045311387";
 
 //    private Thread timerThread;
-    public Handler handler;
+    private Handler mHandler = new Handler();
     public final String SensorType = "input";
 
     @Override
