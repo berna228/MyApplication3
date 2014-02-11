@@ -25,7 +25,7 @@ public class SparkMain extends ActionBarActivity {
             access_token = "a1e9c79a438287e6b9590a06ad32f20e7ce834dc",
             device_id = "48ff72065067555045311387";
 
-    private Thread timerThread;
+//    private Thread timerThread;
     public Handler handler;
     public final String SensorType = "input";
 
@@ -33,26 +33,41 @@ public class SparkMain extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spark_main);
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.spark_main, new PlaceholderFragment())
                     .commit();
         }
-
         inputCmdText = (TextView) findViewById(R.id.input_cmd_text);
         inputResultText = (TextView) findViewById(R.id.input_result_text);
 
-        readSensorData("input");
+//        readSensorData("input");
 
-/*        timerThread = new Thread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                // Cannot complete without throwing an exception
                 while (true) {
                     try {
                         Thread.sleep(500);
                         readSensorData(SensorType);
+                        // unable to setText, app crashes despite context view being set
+                        inputResultText.setText("test");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+/*        timerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Errors frequently
+                while (true) {
+                    try {
+                        Thread.sleep(500);
+                        readSensorData(SensorType);
+                        // unable to setText, app crashes despite context view being set
+//                        inputResultText.setText("test");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -80,16 +95,15 @@ public class SparkMain extends ActionBarActivity {
 
     public void activateButton(View view) {
         readSensorData(SensorType);
+//        inputResultText.setText("set");
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-
         public PlaceholderFragment() {
         }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -108,6 +122,8 @@ public class SparkMain extends ActionBarActivity {
                         Log.d(MY_TAG, "SensorData for " + SensorType + " is " + sensorData.result);
 //                        inputCmdText.setText(sensorData.cmd);
 //                        inputResultText.setText(sensorData.result);
+//                        inputCmdText.setText("command");
+//                        inputResultText.setText("result");
                     }
                     public void failure(RetrofitError retrofitError){
                         Log.d(MY_TAG, "retrofitError = " + retrofitError);
