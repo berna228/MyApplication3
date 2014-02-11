@@ -31,10 +31,10 @@
 -->
 
 
-    <!--<Button
+    <Button
         android:text="@string/button_text"
-        android:layout_below="@id/spark_main_text"
+        android:layout_below="@id/input_result_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:onClick="readSensorData" />-->
+        android:onClick="activateButton" />
 </RelativeLayout>

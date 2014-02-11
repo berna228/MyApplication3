@@ -45,7 +45,7 @@ public class SparkMain extends ActionBarActivity {
 
         readSensorData("input");
 
-        timerThread = new Thread(new Runnable() {
+/*        timerThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 // Cannot complete without throwing an exception
@@ -59,7 +59,7 @@ public class SparkMain extends ActionBarActivity {
                 }
             }
         });
-        timerThread.start();
+        timerThread.start();*/
     }
 
     @Override
@@ -76,6 +76,10 @@ public class SparkMain extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
+    }
+
+    public void activateButton(View view) {
+        readSensorData(SensorType);
     }
 
     /**
