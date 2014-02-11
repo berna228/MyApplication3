@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -20,12 +19,13 @@ import retrofit.client.Response;
 
 public class SparkMain extends ActionBarActivity {
     TextView inputCmdText, inputResultText;
-    private static final String MY_TAG = "SPARK_CORE_TAG";
+    private static final String TAG_SPARK_CORE = "SPARK_CORE";
+    private static final String TAG_RETROFIT = "RETROFIT";
     public String
-            access_token = "558b85ab95e7481b0b85e8bc1bd9a37c3430e6cb",
-            device_id = "48ff72065067555045311387";
+            access_token = "access_token",
+            device_id = "device_id";
 
-//    private Thread timerThread;
+    private Thread timerThread;
     private Handler mHandler = new Handler();
     public final String SensorType = "input";
 
@@ -43,25 +43,10 @@ public class SparkMain extends ActionBarActivity {
 
 //        readSensorData("input");
 
-        runOnUiThread(new Runnable() {
+
+/*        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(500);
-                        readSensorData(SensorType);
-                        // unable to setText, app crashes despite context view being set
-                        inputResultText.setText("test");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-/*        timerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Errors frequently
                 while (true) {
                     try {
                         Thread.sleep(500);
@@ -73,8 +58,24 @@ public class SparkMain extends ActionBarActivity {
                     }
                 }
             }
+        });*/
+        timerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Errors frequently
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                        readSensorData(SensorType);
+                        // unable to setText, app crashes despite context view being set
+//                        inputResultText.setText("test");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         });
-        timerThread.start();*/
+        timerThread.start();
     }
 
     @Override
@@ -116,19 +117,32 @@ public class SparkMain extends ActionBarActivity {
                 .setEndpoint("https://api.spark.io")
                 .build();
         SparkService apiManager = restAdapter.create(SparkService.class);
+
         apiManager.getSensorData(device_id, SensorType, access_token,
                 new Callback<SparkCoreData>() {
+
                     public void success(SparkCoreData sensorData, Response response) {
-                        Log.d(MY_TAG, "SensorData for " + SensorType + " is " + sensorData.result);
+                        Log.d(TAG_SPARK_CORE, "SensorData for " + SensorType + " is " + sensorData.result);
 //                        inputCmdText.setText(sensorData.cmd);
 //                        inputResultText.setText(sensorData.result);
 //                        inputCmdText.setText("command");
 //                        inputResultText.setText("result");
                     }
+                    //fails typically after 0~15 sequential executions
                     public void failure(RetrofitError retrofitError){
-                        Log.d(MY_TAG, "retrofitError = " + retrofitError);
+                        //returns retrofit.RetrofitError
+//                        Log.d(TAG_RETROFIT, "= " + retrofitError);
+
+                        //returns null
+//                        Log.d(TAG_RETROFIT, "= " + retrofitError.getMessage());
+                        //returns com.example.app.SparkCoreData@532b66c0
+                        Log.d(TAG_RETROFIT, "body = " + retrofitError.getBody());
+                        //returns retrofit.client.Response@53297904
+                        Log.d(TAG_RETROFIT, "response = " + retrofitError.getResponse());
+                        //returns correct URL:
+                        //https://api.spark.io/v1/devices/48ff72065067555045311387/input?access_token='accesstoken'
+                        Log.d(TAG_RETROFIT, "URL = " + retrofitError.getUrl());
                     }
                 });
     }
-
 }
